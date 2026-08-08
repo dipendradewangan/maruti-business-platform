@@ -1,49 +1,14 @@
-# Maruti Business Platform
+# React Setup
 
-Enterprise Business Platform for managing business operations, customers, projects, inventory, sales, procurement, and related workflows.
+## Objective
 
-## 🎯 Project Objective
+Initialize the React frontend for the Maruti Business Platform and prepare the basic frontend development environment.
 
-The goal of this project is to build a scalable enterprise-level business platform with a modular architecture that can grow with the organization.
+## Project Initialization
 
-## 🛠️ Tech Stack
+The frontend application was created using Vite with React.
 
-### Frontend
-
-- React
-- Vite
-- Tailwind CSS
-- React Router
-
-### Backend
-
-- Node.js
-- Express.js
-
-### Database
-
-- MySQL
-
-### DevOps
-
-- Docker
-- Docker Compose
-- Jenkins
-- Kubernetes
-
-## 📁 Project Structure
+Project location:
 
 ```text
-maruti-business-platform/
-│
-├── docs/
-│   ├── 02_project_management/
-│   │   └── git/
-│   └── 03_frontend/
-│
-├── frontend/
-│
-├── backend/
-│
-├── .gitignore
-└── README.md
+maruti-business-platform/frontend
