@@ -6,6 +6,7 @@ Path:
 
 ```text
 docs/02_project_management/git/git-workflow.md
+```
 
 # Git Development Workflow
 
