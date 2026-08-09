@@ -35,6 +35,52 @@ The system should allow the business team to know:
 
 ---
 
+# Current System Scope
+
+## Phase 1 - Workflow Management
+
+The initial version of the application will focus on internal business process management and project status tracking.
+
+The application will not directly integrate with government portals, banks, CSPDCL, or other external systems in the initial phase.
+
+Employees will manually perform the required activities through the existing business process and update the activity status in the application using their own user account.
+
+## Employee Activity Updates
+
+Whenever an employee performs an activity for a customer/project, the employee should update the relevant activity in the system.
+
+The system should record:
+
+- Customer/project.
+- Current level/stage.
+- Activity performed.
+- Status.
+- Remarks.
+- Updated by employee.
+- Date.
+- Time.
+
+## Activity History
+
+The system should maintain an activity history for each customer/project.
+
+Example:
+
+```text
+Customer: Example Customer
+
+Level: 3 - Banking Approval
+
+Activity: Bank Approval Follow-up
+Status: Completed
+Updated By: Employee Name
+Date: 09-Aug-2026
+Time: 04:35 PM
+Remarks: Bank approval completed.
+```
+
+---
+
 # Customer Solar Project Lifecycle
 
 The customer project currently follows the following major levels:
