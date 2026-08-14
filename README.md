@@ -1,49 +1,115 @@
 # Maruti Business Platform
 
-Enterprise Business Platform for managing business operations, customers, projects, inventory, sales, procurement, and related workflows.
+> A scalable business management platform for Maruti Enterprises.
 
-## 🎯 Project Objective
+---
 
-The goal of this project is to build a scalable enterprise-level business platform with a modular architecture that can grow with the organization.
+## 📌 Project Overview
 
-## 🛠️ Tech Stack
+Maruti Business Platform is a business management software system being
+developed to digitize and manage the operational workflow of Maruti
+Enterprises.
 
-### Frontend
+The platform is designed to manage customers, employees, workflows,
+documents, installations, permissions, and business operations through
+a centralized system.
 
-- React
-- Vite
+The system is being developed with scalability, security, maintainability,
+and future DevOps automation in mind.
+
+---
+
+# 🎯 Project Goals
+
+The primary goals of the platform are:
+
+- Centralize business operations.
+- Manage customers and employees.
+- Manage employee roles and permissions.
+- Implement level-based workflows.
+- Track employee activities.
+- Manage installation schedules.
+- Maintain complete audit history.
+- Automate database initialization.
+- Manage database schema through migrations.
+- Prepare the application for CI/CD deployment.
+- Build a scalable and maintainable software architecture.
+
+---
+
+# 🏗️ Technology Stack
+
+## Frontend
+
+- React.js
+- JavaScript
 - Tailwind CSS
-- React Router
 
-### Backend
+## Backend
 
 - Node.js
 - Express.js
+- REST API
 
-### Database
+## Database
 
-- MySQL
+- MySQL 8.0
 
-### DevOps
+## Development Tools
+
+- Git
+- GitHub
+- VS Code
+- MySQL Workbench
+- Postman
+
+## DevOps
+
+Planned / upcoming:
 
 - Docker
 - Docker Compose
-- Jenkins
-- Kubernetes
+- CI/CD
+- Cloud Deployment
+- Application Monitoring
 
-## 📁 Project Structure
+---
+
+# 📂 Project Structure
 
 ```text
 maruti-business-platform/
 │
-├── docs/
-│   ├── 02_project_management/
-│   │   └── git/
-│   └── 03_frontend/
+├── backend/
+│   ├── src/
+│   │   ├── config/
+│   │   │   └── db.js
+│   │   │
+│   │   ├── database/
+│   │   │   └── migrationRunner.js
+│   │   │
+│   │   ├── migrations/
+│   │   │   └── 001_create_schema_migrations.sql
+│   │   │
+│   │   └── ...
+│   │
+│   ├── .env
+│   ├── .env.example
+│   ├── .gitignore
+│   ├── package.json
+│   └── server.js
 │
 ├── frontend/
 │
-├── backend/
+├── docs/
+│   ├── engineering-log/
+│   │   └── 2026-08-14-database-migration-auto-initialization.md
+│   │
+│   ├── database/
+│   │   └── database-architecture.md
+│   │
+│   └── git/
+│       └── development-workflow.md
 │
-├── .gitignore
 └── README.md
+```

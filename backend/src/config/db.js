@@ -1,73 +1,137 @@
-// Import the promise-based MySQL client.
-// This allows us to use async/await with MySQL.
+// =========================================================
+// Database Configuration
+// =========================================================
+
+
+// Import MySQL2 promise API.
+// Promise API allows us to use async/await
 const mysql = require("mysql2/promise");
 
-// Create a MySQL connection pool.
+
+// Load environment variables.
+require("dotenv").config();
+
+
+
+// =========================================================
+// Database Configuration
+// =========================================================
+
+// Database configuration comes from the .env file.
+const DB_HOST = process.env.DB_HOST || "localhost";
+const DB_PORT = process.env.DB_PORT || 3306;
+const DB_NAME = process.env.DB_NAME;
+const DB_USER = process.env.DB_USER;
+const DB_PASSWORD = process.env.DB_PASSWORD;
+
+
+
+// =========================================================
+// Create Database
+// =========================================================
 //
-// A connection pool keeps multiple database connections available
-// so the application does not need to create a new connection
-// for every database request.
+// This connection does NOT specify a database.
+//
+// Why?
+// Because the database may not exist yet.
+//
+// Example:
+// If maruti_business_platform does not exist,
+// we cannot connect directly to that database.
+//
+// So first we connect to MySQL Server itself,
+// create the database if required,
+// and then create our application connection pool.
+// =========================================================
+
+
+const createDatabaseIfNotExists = async () => {
+  const connection = await mysql.createConnection({
+    host: DB_HOST,
+    port: DB_PORT,
+    user: DB_USER,
+    password: DB_PASSWORD,
+  });
+
+  try {
+    await connection.query(`
+      CREATE DATABASE IF NOT EXISTS ${DB_NAME}
+      CHARACTER SET utf8mb4
+      COLLATE utf8mb4_general_ci
+      `);
+
+    console.log(`Database ${DB_NAME} is ready`);
+  }
+  finally {
+    await connection.end()
+  }
+
+
+}
+
+
+
+
+// =========================================================
+// Application Connection Pool
+// =========================================================
+//
+// This pool is created AFTER the database exists.
+//
+// The entire application will use this pool for
+// database queries.
+// =========================================================
+
 const pool = mysql.createPool({
-  // MySQL server address
-  host: process.env.DB_HOST,
+  host: DB_HOST,
+  port: DB_PORT,
+  user: DB_USER,
+  password: DB_PASSWORD,
+  database: DB_NAME,
 
-  // MySQL server port
-  port: Number(process.env.DB_PORT),
-
-  // Database name
-  database: process.env.DB_NAME,
-
-  // MySQL username
-  user: process.env.DB_USER,
-
-  // MySQL password
-  password: process.env.DB_PASSWORD,
-
-  // Maximum number of connections in the pool
-  connectionLimit: 10,
-
-  // Allow requests to wait when all connections are busy
+  // Keep connections available for reuse.
   waitForConnections: true,
 
-  // No limit on queued connection requests
+  // Maximum number of simultaneous connections.
+  connectionLimit: 10,
+
+  // Allow unlimited queued requests.
   queueLimit: 0,
 });
 
-// Test the MySQL connection.
-//
-// This function is called when the backend starts.
-// If MySQL is unavailable, the backend will not start.
+
+
+
+// =========================================================
+// Test Database Connection
+// =========================================================
+
 const testDatabaseConnection = async () => {
-  let connection;
+
+  // Get one connection from the pool.
+  const connection = await pool.getConnection();
 
   try {
-    // Get one connection from the pool
-    connection = await pool.getConnection();
 
-    // Run a simple query to verify the database
-    await connection.query("SELECT 1");
+    console.log(
+      "MySQL database connection successful."
+    );
 
-    console.log("MySQL database connected successfully");
-  } catch (error) {
-    // Display the actual database error
-    console.error("MySQL database connection failed:");
-    console.error(error.message);
-
-    // Send the error back to server.js
-    throw error;
   } finally {
-    // Always release the connection back to the pool
-    if (connection) {
-      connection.release();
-    }
+
+    // Return connection back to the pool.
+    connection.release();
   }
 };
 
-// Export the pool so other files can execute queries.
-//
-// Export testDatabaseConnection so server.js can verify
-// the database before starting Express.
+
+
+// =========================================================
+// Export Database Functions
+// =========================================================
+
 module.exports = {
+  createDatabaseIfNotExists,
   pool,
-  testDatabaseConnection,
+  testDatabaseConnection
 };

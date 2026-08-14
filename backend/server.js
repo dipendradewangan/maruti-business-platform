@@ -1,36 +1,96 @@
-// Load environment variables from the .env file
+// Load environment variables.
 require("dotenv").config();
 
-// Import the MySQL database connection test function
-const { testDatabaseConnection } = require("./src/config/db");
 
-
-// Import the Express application
+// Import Express application.
 const app = require("./src/app");
 
 
+
+// Import database functions.
+const {
+    createDatabaseIfNotExists,
+    testDatabaseConnection,
+} = require("./src/config/db");
+
+
+// Import migration runner.
+const {
+    runMigrations,
+} = require("./src/database/migrationRunner");
+
+
+// Application port.
 const PORT = process.env.PORT || 5000;
 
-const startServer = async ()=>{
-    try{
-        // Test the database connection before starting the server
+
+
+
+// =========================================================
+// Start Server
+// =========================================================
+
+const startServer = async () => {
+    try {
+
+        // -------------------------------------------------------
+        // STEP 1
+        // Make sure application database exists.
+        // -------------------------------------------------------
+
+        await createDatabaseIfNotExists();
+
+
+        // -------------------------------------------------------
+        // STEP 2
+        // Test connection with application database.
+        // -------------------------------------------------------
+
         await testDatabaseConnection();
 
-        // Start the server
-        app.listen(PORT, ()=>{
-            console.log(`Server is running on the port ${PORT}`);
-        })
+
+        // -------------------------------------------------------
+        // STEP 3
+        // Run all pending database migrations.
+        // -------------------------------------------------------
+
+        await runMigrations();
+
+
+        // -------------------------------------------------------
+        // STEP 4
+        // Start Express server.
+        // -------------------------------------------------------
+
+        app.listen(PORT, () => {
+
+            console.log(
+                `Maruti Business Platform API is running on port ${PORT}`
+            );
+
+        });
+
     }
-    catch(error){
-        // stop startup if database connection fails
-        console.error("Failed to start server:", error.message);
+    catch (error) {
+
+        // If database creation, connection,
+        // or migration fails, stop the application.
+
+        console.error(
+            "Failed to start server:",
+            error.message
+        );
+
         process.exit(1);
     }
 }
 
-// initialize the backend server
-startServer();
 
-// app.listen(process.env.PORT, ()=>{
-//     console.log("Server is running on port " + process.env.PORT);
-// })
+
+
+
+// =========================================================
+// Initialize Application
+// =========================================================
+
+startServer();
