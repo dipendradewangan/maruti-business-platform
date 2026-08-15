@@ -20,6 +20,10 @@ const {
 } = require("./src/database/migrationRunner");
 
 
+// Import database integrity checker.
+const { checkDatabaseIntegrity } = require("./src/database/databaseIntegrityChecker")
+
+
 // Application port.
 const PORT = process.env.PORT || 5000;
 
@@ -59,6 +63,15 @@ const startServer = async () => {
 
         // -------------------------------------------------------
         // STEP 4
+        // Validate actual database structure.
+        // -------------------------------------------------------
+
+        await checkDatabaseIntegrity();
+
+
+
+        // -------------------------------------------------------
+        // STEP 5
         // Start Express server.
         // -------------------------------------------------------
 
