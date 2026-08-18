@@ -1,0 +1,92 @@
+services:
+  # ===============================================================================================
+  # MYSQL DATABASE
+  # ===============================================================================================
+  mysql:
+    image: mysql:8.4
+    container_name: maruti_sql
+
+    restart: unless-stoped
+
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: maruti_business_platform
+    
+    ports:
+      - "3306:3306"
+    
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "localhost",
+          "-uroot",
+          "-p ${DB_PASSWORD}"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+
+  # ===============================================================================================
+  # BACKEND API
+  # ===============================================================================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+
+    container_name: maruti-backend
+
+    restart: unless-stopped
+
+    enviorment:
+      PORT: 5000
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: maruti-business-platform
+      DB_USER: root
+      DB_PASSWORD: ${DB_PASSWORD}
+      FRONTEND_URL: http://localhost:5173
+      NODE_ENV: production
+      
+    ports:
+      - "5000:5000"
+
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+
+  # ===============================================================================================
+  # FRONTEND 
+  # ===============================================================================================
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    
+    container_name: maruti-frontend
+
+    restart: unless-stopped
+
+    ports: 
+      - "5173:80"
+
+    depends_on: 
+      - backend
+
+
+
+
+# ==========================================
+# Persistent MySQL Storage
+# ==========================================
+volumes:
+  mysql_data:
