@@ -3,6 +3,10 @@ const cors = require("cors");
 const app = express();
 const { pool } = require("./config/db");
 
+// importing routes
+const leadRoutes = require("./routes/leadRoutes");
+
+
 app.use(express.json());
 
 app.use(cors({
@@ -10,14 +14,11 @@ app.use(cors({
 }));
 
 
-// app.get("/", (req, res) => {
-//     res.json({
-//         success : true,
-//         message: "Welcome to the Maruti Business Platform",
-//         timestamp: new Date().toISOString(),
 
-//     })
-// });
+app.use('/api/leads', leadRoutes);
+
+
+
 
 
 
@@ -42,5 +43,10 @@ app.get("/api/health", async (req, res) => {
         });
     }
 });
+
+
+
+
+
 
 module.exports = app;   
