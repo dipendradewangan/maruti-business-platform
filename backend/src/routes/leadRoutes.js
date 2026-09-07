@@ -3,11 +3,14 @@ const express = require('express')
 const router = express.Router()
 
 
+const {createLeadController,
+    getAllLeadController
+} = require('../controllers/leadController')
 
 
-router.get('/', (req,res)=>{
-    console.log("get route for lead is working")
-})
+
+router.post('/', createLeadController)
+router.get('/', getAllLeadController)
 
 
 
