@@ -3,14 +3,17 @@ const express = require('express')
 const router = express.Router()
 
 
-const {createLeadController,
-    getAllLeadController
+const {
+    createLeadController,
+    getAllLeadController,
+    getLeadByIdController
 } = require('../controllers/leadController')
 
 
 
 router.post('/', createLeadController)
 router.get('/', getAllLeadController)
+router.get('/:id', getLeadByIdController)
 
 
 

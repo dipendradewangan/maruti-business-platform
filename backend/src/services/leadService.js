@@ -67,13 +67,40 @@ const createLeadService = async (leadData) => {
 
 
 
-const getAllLeadService = async ()=>{
-    const AllLeadQuery = `SELECT * FROM leads`;
-    const leads = await pool.query(AllLeadQuery);
-    console.log("leads: ", leads)
+const getAllLeadService = async () => {
+    const AllLeadQuery = `
+        select 
+            l.id,
+            l.lead_name,
+            l.mobile_number,
+            l.location,
+            l.lead_name,
+            l.lead_source,
+            l.requirement_type_id,
+            mrt.code AS requirement_type_code,
+            mrt.name AS requirement_type_name,
+            l.requirement_details,
+            l.status,
+            l.created_at,
+            l.updated_at
+        from leads as l
+        inner join master_requirement_types mrt
+        on l.requirement_type_id = mrt.id
+    `;
+    const [rows] = await pool.query(AllLeadQuery);
+    return rows;
+}
+
+
+const getLeadByIdService = async (leadId)=>{
+  
+    const getLeadByIdQuery = `Select * from leads where id = ?`;
+    const [rows] = await pool.query(getLeadByIdQuery, [leadId]);
+     return rows[0] || null;
 }
 
 module.exports = {
     createLeadService,
-    getAllLeadService
+    getAllLeadService,
+    getLeadByIdService
 }
