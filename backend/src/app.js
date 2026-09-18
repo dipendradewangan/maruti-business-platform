@@ -4,7 +4,10 @@ const app = express();
 const { pool } = require("./config/db");
 
 // importing routes
+const branchRoutes = require("./routes/branchRoutes")
 const leadRoutes = require("./routes/leadRoutes");
+const requirementTypeRoutes = require("./routes/requirementTypeRoutes");
+
 
 
 app.use(express.json());
@@ -15,6 +18,8 @@ app.use(cors({
 
 
 
+app.use('/api/master/branches', branchRoutes)
+app.use("/api/master/requirement-types", requirementTypeRoutes);
 app.use('/api/leads', leadRoutes);
 
 

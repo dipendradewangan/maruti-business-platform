@@ -1,33 +1,59 @@
-const express = require('express')
-
-const router = express.Router()
-
+const express = require("express");
 
 const {
     createLeadController,
-    getAllLeadController,
+    getAllLeadsController,
+    getLeadsByBranchController,
     getLeadByIdController,
     updateLeadController,
     updateLeadStatusController,
+    deleteLeadController,
     createFollowUpController,
-    getLeadsFollowUpsController,
-    updateFollowUpController
-} = require('../controllers/leadController')
+    getLeadFollowUpsController,
+    updateFollowUpController,
+} = require("../controllers/leadController");
+
+const router = express.Router();
 
 
+// ============================================================
+// Lead APIs
+// ============================================================
 
-// lead apis
-router.post('/', createLeadController)
-router.get('/', getAllLeadController)
-router.get('/:id', getLeadByIdController)
-router.put('/:id', updateLeadController)
-router.patch('/:id/status', updateLeadStatusController)
+// Create Lead
+router.post("/", createLeadController);
+
+// Get All Leads
+router.get("/", getAllLeadsController);
+
+// Get Leads By Branch
+router.get("/branch/:branchId", getLeadsByBranchController);
+
+// Get Lead By ID
+router.get("/:id", getLeadByIdController);
+
+// Update Lead
+router.put("/:id", updateLeadController);
+
+// Update Lead Status
+router.patch("/:id/status", updateLeadStatusController);
+
+// Delete Lead
+router.delete("/:id", deleteLeadController);
 
 
-// follow up apis
-router.post('/:id/followups', createFollowUpController)
-router.get('/:id/followups', getLeadsFollowUpsController)
+// ============================================================
+// Lead Follow-up APIs
+// ============================================================
 
-router.put("/followups/:id", updateFollowUpController)
+// Create Follow-up
+router.post("/:id/followups", createFollowUpController);
+
+// Get Lead Follow-ups
+router.get("/:id/followups", getLeadFollowUpsController);
+
+// Update Follow-up
+router.put("/followups/:id", updateFollowUpController);
+
 
 module.exports = router;
