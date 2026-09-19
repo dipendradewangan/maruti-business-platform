@@ -1,6 +1,6 @@
 // Base URL of the Express backend API.
 // All frontend API requests will use this base URL.
-const API_BASE_URL = "http://localhost:5000/api";
+export const API_BASE_URL = "http://localhost:5000/api";
 
 /**
  * Check whether the backend API is running.
